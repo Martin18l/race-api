@@ -29,4 +29,28 @@ public class RunnerService {
                 )
         );
     }
+    public Runner create (Runner runner){
+        if (runner.getEmail() == null || !runner.getEmail().contains("@")) {
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, 
+                "L'adresse email doit contenir un @"
+            );
+        }
+        String.format("201 Created");
+        return runnerRepository.save(runner);
+    }
+    
+    public void delete (Long id){
+        runnerRepository.deleteById(id);
+    }
+
+    public Runner update (Long id, Runner runner){
+        Runner existingRunner = getById(id);
+        existingRunner.setFirstName(runner.getFirstName());
+        existingRunner.setLastName(runner.getLastName());
+        existingRunner.setEmail(runner.getEmail());
+        existingRunner.setAge(runner.getAge());
+        return runnerRepository.save(existingRunner);
+    }
+
 }
